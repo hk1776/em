@@ -15,10 +15,19 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +59,8 @@ public class EMController {
             return "layouts/login";
         }
 
-        String url = "https://mini7-festapi-a063094-gnh0dffwbvbfc9hd.koreacentral-01.azurewebsites.net/items/text"; // 대상 서버의 URL
+//        String url = "https://mini7-festapi-a063094-gnh0dffwbvbfc9hd.koreacentral-01.azurewebsites.net/items/text";
+        String url = "http://127.0.0.1:8000/items/text";
         String send = postService.sendPostRequest(url, info);
         Gson gson = new Gson();
         EMDto.Info data = gson.fromJson(send, EMDto.Info.class);
@@ -98,6 +108,60 @@ public class EMController {
             memberService.save(member);
             return "redirect:/";
         }
+
+    }
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+                                   @RequestParam("lat") String lat,
+                                   @RequestParam("lon") String lon,
+                                   Model model,
+                                   @Login Member loginmember) {
+        if (loginmember == null) {
+            return "layouts/login";
+        }
+        // lat와 lon을 "lat,lon" 문자열로 결합
+        String location = lat + "," + lon;
+        log.info("latlon"+location);
+        // FastAPI 서버로 파일 전송
+        String fastApiUrl = "http://127.0.0.1:8000/upload-mp3/";
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        // Request body에 파일과 위치 데이터(emer) 추가
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", file.getResource());
+        body.add("emer", location);  // lat, lon 결합된 문자열을 'emer' 파라미터로 전송
+
+        // HTTP 요청 생성
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.postForEntity(fastApiUrl, requestEntity, String.class);
+        String responseBody = response.getBody();
+
+        log.info("음성 응답"+responseBody.toString());
+
+        // 받은 JSON 결과를 Java 객체로 변환
+        Gson gson = new Gson();
+        EMDto.Info data = gson.fromJson(responseBody, EMDto.Info.class);
+        System.out.println(data);
+
+        // 데이터를 병원 리스트로 변환
+        List<EMDto.Hospital> hospitalList = emService.transformData(data);
+
+        boolean emergency = true;  // 기본적으로 응급 상황으로 설정
+        if (!hospitalList.isEmpty()) {
+            emergency = false;  // 병원 목록이 존재하면 응급 상황이 아님
+            // 병원 데이터를 모델에 추가
+            for (int i = 0; i < hospitalList.size(); i++) {
+                model.addAttribute("data" + i, hospitalList.get(i));
+            }
+        }
+
+        // 응급 상황 여부와 로그인된 회원 정보 모델에 추가
+        model.addAttribute("emergency", emergency);
+        model.addAttribute("member", loginmember);
+        return "layouts/result";  // 응급 상황 처리 결과 화면으로 이동
 
     }
 }
