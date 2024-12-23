@@ -1,0 +1,90 @@
+<style>
+    .hospital-card:hover {
+        background-color: #f0f8ff; /* 마우스 올릴 때 배경색 변경 */
+    }
+</style>
+{{>layouts/header}}
+<div id="back_ground">
+
+    <div class="container">
+        <a href="/" class="btn btn-primary" style="color: white;display: flex;justify-content: center; width: 10%;margin-bottom: 10px">다시 탐색</a>
+        <div class="scrollable-div">
+            {{^emergency}}
+                {{#data0}}
+                    <form id="hospitalForm0" action="/em/info/detail" method="POST">
+                        <input id="a1" type="hidden" name="hospital" value="{{hospital}}">
+                        <input id="a2" type="hidden" name="addr" value="{{addr}}">
+                        <input id="a3" type="hidden" name="tel" value="{{tel}}">
+                        <input id="a4" type="hidden" name="eta" value="{{eta}}">
+                        <input id="a5" type="hidden" name="dist" value="{{dist}}">
+                        <input id="a6" type="hidden" name="fee" value="{{fee}}">
+                        <input type="hidden" name="path" value="{{path}}">
+                    </form>
+                        <div class="hospital-card" onclick="submitForm0()">
+                            <h2>{{hospital}}</h2>
+                            <p><strong>주소:</strong> {{addr}}</p>
+                            <p><span class="eta">예상 도착 시간:</span> {{eta}}</p>
+                            <p><span class="distance">거리:</span> {{dist}} km</p>
+                        </div>
+
+                {{/data0}}
+                {{#data1}}
+                    <form id="hospitalForm1" action="/em/info/detail" method="POST">
+                        <input id="b1" type="hidden" name="hospital" value="{{hospital}}">
+                        <input id="b2" type="hidden" name="addr" value="{{addr}}">
+                        <input id="b3" type="hidden" name="tel" value="{{tel}}">
+                        <input id="b4" type="hidden" name="eta" value="{{eta}}">
+                        <input id="b5" type="hidden" name="dist" value="{{dist}}">
+                        <input id="b6" type="hidden" name="fee" value="{{fee}}">
+                        <input type="hidden" name="path" value="{{path}}">
+                    </form>
+                    <div class="hospital-card" onclick="submitForm1()">
+                        <h2>{{hospital}}</h2>
+                        <p><strong>주소:</strong> {{addr}}</p>
+                        <p><span class="eta">예상 도착 시간:</span> {{eta}}</p>
+                        <p><span class="distance">거리:</span> {{dist}} km</p>
+                    </div>
+
+                {{/data1}}
+                {{#data2}}
+                    <form id="hospitalForm2" action="/em/info/detail" method="POST">
+                        <input id="c1" type="hidden" name="hospital" value="{{hospital}}">
+                        <input id="c2" type="hidden" name="addr" value="{{addr}}">
+                        <input id="c3" type="hidden" name="tel" value="{{tel}}">
+                        <input id="c4" type="hidden" name="eta" value="{{eta}}">
+                        <input id="c5" type="hidden" name="dist" value="{{dist}}">
+                        <input id="c6" type="hidden" name="fee" value="{{fee}}">
+                        <input type="hidden" name="path" value="{{path}}">
+                    </form>
+                    <div class="hospital-card" onclick="submitForm2()">
+                        <h2>{{hospital}}</h2>
+                        <p><strong>주소:</strong> {{addr}}</p>
+                        <p><span class="eta">예상 도착 시간:</span> {{eta}}</p>
+                        <p><span class="distance">거리:</span> {{dist}} km</p>
+                    </div>
+
+                {{/data2}}
+            {{/emergency}}
+            {{#emergency}}
+                <div class="no-results">
+                    위급 상황이 아닌 것으로 판단됩니다. <br>
+                    가까운 병원을 찾아가는 것을 추천드립니다.
+                </div>
+            {{/emergency}}
+        </div>
+    </div>
+</div>
+
+<script>
+    function submitForm0() {
+        document.getElementById("hospitalForm0").submit(); // 폼 제출
+    }
+    function submitForm1() {
+        document.getElementById("hospitalForm1").submit(); // 폼 제출
+    }
+    function submitForm2() {
+        document.getElementById("hospitalForm2").submit(); // 폼 제출
+    }
+</script>
+
+{{>layouts/footer}}

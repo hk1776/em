@@ -1,0 +1,62 @@
+{{>layouts/header}}
+<style>
+    .footer {
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background: white;
+        text-align: center;
+    }
+    #back_ground {
+        display: flex;
+        justify-content: flex-start; /* 왼쪽 정렬 */
+        align-items: center;
+        background-color: lightgray;
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background-image: url('/images/pic.jpg');
+        background-position: center;
+        background-size: cover;
+        padding-left: 5%;
+    }
+    #data_input {
+        background-color: white;
+        padding: 30px;
+        width: 30%;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    #data_input img {
+        display: block;
+        margin: 20px auto 20px; /* 중앙 정렬 및 아래쪽 여백 추가 */
+        width: 13%; /* 부모 요소의 가로 10% */
+        height: 15%; /* 부모 요소의 세로 10% */
+    }
+
+</style>
+<div id="back_ground">
+    <form id = "data_input" class="container" action="/em/signin" method="post">
+        {{#signInError}}
+            <div style="color: red; font-weight: bold;">
+                이미 있는 아이디입니다.
+            </div>
+        {{/signInError}}
+        <div class ="mb-3">
+            <label class="form-label">이름</label>
+            <input type="text" class="form-control" name="name">
+        </div>
+        <div class ="mb-3">
+            <label class="form-label">아이디</label>
+            <input type="text" class="form-control" name="loginId">
+        </div>
+        <div class ="mb-3">
+            <label class="form-label">비밀번호</label>
+            <input type="text" class="form-control" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;margin-bottom: 20px">회원가입</button>
+        <a href="/" class="btn btn-secondary" style="width: 100%">뒤로가기</a>
+    </form>
+</div>
+
+{{>layouts/footer}}
