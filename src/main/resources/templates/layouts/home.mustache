@@ -2,8 +2,8 @@
 <div id="back_ground">
     <div style="display: flex; justify-content: flex-start; width: 30%; padding: 0;">
         <button id="text" type="button" class="btn btn-success"
-                style="background-color: white; color: black; border-bottom : 2px solid white;border-bottom-left-radius: 0; border-bottom-right-radius: 0;">텍스트 전송</button>
-        <button id="audio" type="button" class="btn btn-success" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">오디오 전송</button>
+                style="background-color: white; color: black; border-bottom : 2px solid white;border-bottom-left-radius: 0; border-bottom-right-radius: 0;">텍스트</button>
+        <button id="audio" type="button" class="btn btn-success" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">오디오</button>
     </div>
     <form id="txt_input" class="container" action="/em/info" method="post"
           style="background-color: white; padding: 30px; width: 30%; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0; border-top-right-radius: 8px; height: 55%; position: relative;">
@@ -33,7 +33,7 @@
 
         <!-- 제출 버튼 -->
         <button type="submit" class="btn btn-primary"
-                style="position: absolute; bottom: 30px; right: 0; transform: translateX(-50%);">Submit</button>
+                style="position: absolute; bottom: 30px; right: 0; transform: translateX(-50%);">병원 탐색</button>
     </form>
 
     <form id="audio_input" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
@@ -58,16 +58,16 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label" style="font-weight: bold;">음성 파일</label>
-            <label class="form-label" for="audioFile" id="audioFileLabel" style="display:none;">녹음 완료</label>
-            <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display:none;">
+            <label class="form-label" style="font-weight: bold;">상태 녹음</label>
+            <label class="form-label" for="audioFile" id="audioFileLabel" style="display:none;pointer-events: none;">녹음이 완료되었습니다.</label>
+            <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display:none;pointer-events: none;">
         </div>
         <div class="mb-3" style="height: 10%">
             <button id="startBtn" type="button">Start Recording</button>
             <button id="stopBtn"  type="button" disabled>Stop Recording</button>
         </div>
         <button type="submit" class="btn btn-primary"
-                style="position: absolute; bottom: 30px; right: 0;  transform: translateX(-50%);">Submit</button>
+                style="position: absolute; bottom: 30px; right: 0;  transform: translateX(-50%);">병원 탐색</button>
 
     </form>
 
