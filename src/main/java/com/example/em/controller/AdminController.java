@@ -3,7 +3,6 @@ package com.example.em.controller;
 import com.example.em.config.Login;
 import com.example.em.domain.EMDto;
 import com.example.em.domain.Member;
-import com.example.em.service.EMService;
 import com.google.gson.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,6 @@ import java.util.stream.IntStream;
 @Slf4j
 @RequiredArgsConstructor
 public class AdminController {
-    private final EMService emService;
     private final RestTemplate restTemplate;
 
     @Value("${hospital.api.host}")
@@ -80,6 +78,8 @@ public class AdminController {
         if (startDate == null && endDate == null && emClass != null) {
             url += "?emClass=" + emClass;
         }
+
+        System.out.println(url);
 
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Object> requestEntity = new HttpEntity<>(headers);

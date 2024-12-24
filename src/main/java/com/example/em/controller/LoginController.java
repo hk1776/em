@@ -3,13 +3,10 @@ package com.example.em.controller;
 import com.example.em.config.Login;
 import com.example.em.domain.EMDto;
 import com.example.em.domain.Member;
-import com.example.em.repository.MemberRepository;
 import com.example.em.service.LoginService;
 import com.example.em.session.SessionConst;
 import com.example.em.session.SessionManager;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +61,11 @@ public class LoginController {
         log.info("BindingResult has errors: {}", bindingResult.hasErrors());
         HttpSession session = request.getSession();
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+
+        if (loginMember.isAdmin()) {
+            log.info("Admin login detected for user: {}", loginMember.getLoginId());
+            return "redirect:/admin"; // 관리자 화면 경로
+        }
 
         return "redirect:" + redirectURL;
 
