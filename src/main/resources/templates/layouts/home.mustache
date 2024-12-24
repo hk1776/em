@@ -38,6 +38,7 @@
 
     <form id="audio_input" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
           style="background-color: white; padding: 30px; width: 30%;height: 55%; border-radius: 8px; position: relative;display: none">
+
         <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
             <button type="button" class="icon-button btn btn-outline-primary" id="location-btn" style="margin-left: auto;">
@@ -53,13 +54,13 @@
         <!-- 경도 입력 -->
         <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
             <label class="form-label" style="margin-right: 10px;">경도</label>
-            <input type="text" class="form-control" id="latitude2"  name="lon2" placeholder="경도를 입력하세요" style="flex: 1;">
+            <input type="text" class="form-control" id="longitude2"  name="lon2" placeholder="경도를 입력하세요" style="flex: 1;">
         </div>
 
         <div class="mb-3">
-            <label class="form-label" style="font-weight: bold">음성 파일</label>
+            <label class="form-label" style="font-weight: bold;">음성 파일</label>
             <label class="form-label" for="audioFile" id="audioFileLabel" style="display:none;">녹음 완료</label>
-            <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display: none">
+            <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display:none;">
         </div>
         <div class="mb-3" style="height: 10%">
             <button id="startBtn" type="button">Start Recording</button>
@@ -153,13 +154,13 @@
                 return;
             }
 
-            // 음성 파일을 input에 동적으로 추가
+            // DataTransfer 객체를 사용하여 파일을 동적으로 추가
             const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(audioFile); // 음성 파일을 추가
-            audioFileInput.files = dataTransfer.files; // input에 파일 설정
+            dataTransfer.items.add(audioFile); // 녹음 파일을 추가
+            audioFileInput.files = dataTransfer.files; // input의 files 속성에 추가된 파일 설정
+
+            // 음성 파일이 추가된 것을 표시
             audioFileLabel.style.display = "block";
-            // 폼을 제출
-            //document.getElementById("data_audio").submit();
 
             // 초기화
             audioChunks = [];

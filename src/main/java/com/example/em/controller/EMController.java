@@ -112,13 +112,17 @@ public class EMController {
     }
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
-                                   @RequestParam("lat") String lat,
-                                   @RequestParam("lon") String lon,
+                                   @RequestParam("lat2") String lat,
+                                   @RequestParam("lon2") String lon,
                                    Model model,
                                    @Login Member loginmember) {
         if (loginmember == null) {
             return "layouts/login";
         }
+        if (!file.getContentType().equals("audio/mp3")) {
+            log.info("파일 형식 에러"+file.getContentType());
+        }
+
         // lat와 lon을 "lat,lon" 문자열로 결합
         String location = lat + "," + lon;
         log.info("latlon"+location);
