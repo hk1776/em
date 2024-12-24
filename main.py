@@ -1,6 +1,6 @@
 from typing import Union
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from pydantic import BaseModel
 import pandas as pd
 import sqlite3
@@ -11,6 +11,9 @@ path = './'
 
 import os
 import requests
+import json
+from typing import Optional
+from datetime import datetime
 import xml.etree.ElementTree as ET
 import pandas as pd
 import sys
