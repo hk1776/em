@@ -1,20 +1,30 @@
 {{>layouts/header}}
 
 <div id="back_ground">
-    <form id="data_input" class="container" action="/em/info" method="post"
-          style="background-color: white; padding: 30px; width: 30%; border-radius: 8px; ">
-        <div class="mb-3">
+    <form id="data_input" class="container" action="/em/info" method="post" style="background-color: white; padding: 30px; width: 30%; border-radius: 8px;">
+        <!-- 위도 입력 -->
+        <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
             <label class="form-label">위도</label>
-            <input id="latitude" type="text" class="form-control" name="lat">
+            <input type="text" class="form-control" name="lat" placeholder="위도를 입력하세요" style="flex: 1; margin-left: 10px;">
+            <button type="button" class="icon-button btn btn-outline-primary" id="location-btn" style="margin-left: 10px;">
+                <img id="location-btm-img" src="images/location_img.png" alt="location" style="width: 20px; height: 20px;">
+            </button>
         </div>
+
+        <!-- 경도 입력 -->
+        <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label" style="margin-right: 10px;">경도</label>
+            <input type="text" class="form-control" name="lon" placeholder="경도를 입력하세요" style="flex: 1;">
+        </div>
+
+
+        <!-- 상태 입력 -->
         <div class="mb-3">
-            <label class="form-label">경도</label>
-            <input id="longitude" type="text" class="form-control" name="lon">
+            <label class="form-label">상태</label>
+            <textarea class="form-control" name="status" rows="5" placeholder="현재 무슨상태이죠?"></textarea>
         </div>
-        <div class="mb-3">
-            <label class="form label">상태</label>
-            <textarea id="status" class="form-control" name="status" rows="5"></textarea>
-        </div>
+
+        <!-- 제출 버튼 -->
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
@@ -22,11 +32,11 @@
           style="background-color: white; padding: 30px; width: 30%; border-radius: 8px; ">
         <div class="mb-3">
             <label class="form-label">위도</label>
-            <input id="latitude2" type="text" class="form-control" name="lat">
+            <input id="latitude2" type="text" class="form-control" name="lat2">
         </div>
         <div class="mb-3">
             <label class="form-label">경도</label>
-            <input id="longitude2" type="text" class="form-control" name="lon">
+            <input id="longitude2" type="text" class="form-control" name="lon2">
         </div>
         <div class="mb-3">
             <label class="form-label">음성 파일</label>
@@ -50,6 +60,45 @@
     const audioFileInput = document.getElementById("audioFile");
     const audioFileLabel = document.getElementById("audioFileLabel");
 
+    document.getElementById('location-btn').addEventListener('click', function (event) {
+        event.preventDefault(); // 기본 동작 방지
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        // 입력 필드에 위치 값 삽입
+                        document.querySelector('input[name="lat"]').value = latitude;
+                        document.querySelector('input[name="lon"]').value = longitude;
+                        document.querySelector('input[name="lat2"]').value = latitude;
+                        document.querySelector('input[name="lon2"]').value = longitude;
+
+
+
+                    },
+                    (error) => {
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                alert("위치 정보 사용이 거부되었습니다.");
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                alert("위치 정보를 사용할 수 없습니다.");
+                                break;
+                            case error.TIMEOUT:
+                                alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+                                break;
+                            default:
+                                alert("알 수 없는 오류가 발생했습니다.");
+                        }
+                        console.error(error);
+                    }
+            );
+        } else {
+            alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
+        }
+    });
     startBtn.addEventListener("click", async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
