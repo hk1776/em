@@ -1,85 +1,97 @@
 {{>layouts/header}}
 
 <div id="back_ground">
-    <form id="data_input" class="container" action="/em/info" method="post" style="background-color: white; padding: 30px; width: 30%; border-radius: 8px;">
-        <!-- 위도 입력 -->
-        <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
-            <label class="form-label">위도</label>
-            <input type="text" class="form-control" name="lat" placeholder="위도를 입력하세요" style="flex: 1; margin-left: 10px;">
-            <button type="button" class="icon-button btn btn-outline-primary" id="location-btn" style="margin-left: 10px;">
-                <img id="location-btm-img" src="images/location_img.png" alt="location" style="width: 20px; height: 20px;">
-            </button>
-        </div>
-
-        <!-- 경도 입력 -->
-        <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
-            <label class="form-label" style="margin-right: 10px;">경도</label>
-            <input type="text" class="form-control" name="lon" placeholder="경도를 입력하세요" style="flex: 1;">
-        </div>
-
-
-
-        <!-- 상태 입력 -->
+    <form id="data_input" class="container" action="/em/info" method="post"
+          style="background-color: white; padding: 30px; width: 30%; border-radius: 8px; ">
         <div class="mb-3">
-            <label class="form-label">상태</label>
-            <textarea class="form-control" name="status" rows="5" placeholder="현재 무슨상태이죠?"></textarea>
+            <label class="form-label">위도</label>
+            <input id="latitude" type="text" class="form-control" name="lat">
         </div>
-
-        <!-- 제출 버튼 -->
+        <div class="mb-3">
+            <label class="form-label">경도</label>
+            <input id="longitude" type="text" class="form-control" name="lon">
+        </div>
+        <div class="mb-3">
+            <label class="form label">상태</label>
+            <textarea id="status" class="form-control" name="status" rows="5"></textarea>
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <div id="loading" style="display:none;">
-        <div class="spinner"></div>
-    </div>
+    <form id="data_audio" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
+          style="background-color: white; padding: 30px; width: 30%; border-radius: 8px; ">
+        <div class="mb-3">
+            <label class="form-label">위도</label>
+            <input id="latitude2" type="text" class="form-control" name="lat">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">경도</label>
+            <input id="longitude2" type="text" class="form-control" name="lon">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">음성 파일</label>
+            <label class="form-label" for="audioFile" id="audioFileLabel" style="display:none;">녹음 완료</label>
+            <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display: none">
+        </div>
+        <button id="startBtn" type="button">Start Recording</button>
+        <button id="stopBtn"  type="button" disabled>Stop Recording</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
 
-    <script>
-        // 로딩 상태 표시
-        const form = document.getElementById("data_input");
-        const loading = document.getElementById("loading");
+    </form>
 
-        form.addEventListener("submit", function (event) {
-            loading.style.display = "flex";
-        });
-
-        // 위치 버튼 클릭 이벤트
-        document.getElementById('location-btn').addEventListener('click', function (event) {
-            event.preventDefault(); // 기본 동작 방지
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const latitude = position.coords.latitude;
-                            const longitude = position.coords.longitude;
-
-                            // 입력 필드에 위치 값 삽입
-                            document.querySelector('input[name="lat"]').value = latitude;
-                            document.querySelector('input[name="lon"]').value = longitude;
-
-
-                        },
-                        (error) => {
-                            switch (error.code) {
-                                case error.PERMISSION_DENIED:
-                                    alert("위치 정보 사용이 거부되었습니다.");
-                                    break;
-                                case error.POSITION_UNAVAILABLE:
-                                    alert("위치 정보를 사용할 수 없습니다.");
-                                    break;
-                                case error.TIMEOUT:
-                                    alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
-                                    break;
-                                default:
-                                    alert("알 수 없는 오류가 발생했습니다.");
-                            }
-                            console.error(error);
-                        }
-                );
-            } else {
-                alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
-            }
-        });
-    </script>
 </div>
+<script>
+    let mediaRecorder;
+    let audioChunks = [];
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const latitudeInput = document.getElementById("latitude2");
+    const longitudeInput = document.getElementById("longitude2");
+    const audioFileInput = document.getElementById("audioFile");
+    const audioFileLabel = document.getElementById("audioFileLabel");
 
+    startBtn.addEventListener("click", async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = (event) => {
+            audioChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+            const audioFile = new File([audioBlob], "recording.mp3", { type: "audio/mp3" });
+
+            // 위도, 경도 값 가져오기
+            const lat = latitudeInput.value;
+            const lon = longitudeInput.value;
+
+            if (!lat || !lon) {
+                alert("위도와 경도를 입력하세요.");
+                return;
+            }
+
+            // 음성 파일을 input에 동적으로 추가
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(audioFile); // 음성 파일을 추가
+            audioFileInput.files = dataTransfer.files; // input에 파일 설정
+            audioFileLabel.style.display = "block";
+            // 폼을 제출
+            //document.getElementById("data_audio").submit();
+
+            // 초기화
+            audioChunks = [];
+        };
+
+        mediaRecorder.start();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+    });
+
+    stopBtn.addEventListener("click", () => {
+        mediaRecorder.stop();
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+    });
+</script>
 {{>layouts/footer}}
