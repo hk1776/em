@@ -1,6 +1,8 @@
 package com.example.em.controller;
 
+import com.example.em.config.Login;
 import com.example.em.domain.EMDto;
+import com.example.em.domain.Member;
 import com.example.em.service.EMService;
 import com.google.gson.*;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +42,18 @@ public class AdminController {
     private String hospitalApiHost;
 
     @GetMapping("/admin")
-    public String adminPage(Model model, @RequestParam(name="page", defaultValue = "1") int page,
+    public String adminPage(@Login Member loginmember, Model model, @RequestParam(name="page", defaultValue = "1") int page,
                             @RequestParam(name = "startDate", required = false) String startDateStr,
                             @RequestParam(name = "endDate", required = false) String endDateStr,
                             @RequestParam(name = "emClass", required = false) Integer emClass) {
         Pageable pageable = PageRequest.of(page - 1, 5);
         log.info("Accessing admin page");
+
+        if(loginmember == null || !loginmember.isAdmin()) {
+            model.addAttribute("message", "관리자가 아닙니다.");
+            model.addAttribute("url", "/");
+            return "alert/alert";
+        }
 
         LocalDateTime startDate = null;
         LocalDateTime endDate = null;
