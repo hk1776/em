@@ -27,3 +27,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
+hospital:
+  api:
+    host: https://min17-fastapi-aivle3047-cyeqhrh4c2chbhe5.koreacentral-01.azurewebsites.net
