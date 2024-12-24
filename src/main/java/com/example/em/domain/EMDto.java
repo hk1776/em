@@ -115,4 +115,10 @@ public class EMDto {
         private EMDto.Hospital hospital2;
         private EMDto.Hospital hospital3;
     }
+
+    @Data
+    public static class LogChart {
+        private LocalDateTime datetime;
+        private int em_class;
+    }
 }
