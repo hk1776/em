@@ -217,26 +217,29 @@ class AdminLog (BaseModel):
     fee3: Optional[float] = 0
 
 @app.get('/items')
-def getLogList():
-    
+def getLogList(
+    startDate: Optional[str] = Query(None),
+    endDate: Optional[str] = Query(None),
+    emClass: Optional[int] = Query(None)
+    ):
     conn = sqlite3.connect('./db/em.db')
 
     query = """
-        SELECT datetime, input_text, input_summary, input_latitude, input_longitude, 
-            em_class, hospital1, addr1, tel1, eta1, dist1, fee1, 
-            hospital2, addr2, tel2, eta2, dist2, fee2, 
-            hospital3, addr3, tel3, eta3, dist3, fee3 
+        SELECT datetime, input_text, input_summary, input_latitude, input_longitude,
+            em_class, hospital1, addr1, tel1, eta1, dist1, fee1,
+            hospital2, addr2, tel2, eta2, dist2, fee2,
+            hospital3, addr3, tel3, eta3, dist3, fee3
         FROM emdata
     """
     df = pd.read_sql(query, conn)
-    
+
     conn.close()
-    
+
     result = []
     for _, row in df.iterrows():
         row_dict = row.to_dict()
         row_dict = {k: (None if pd.isna(v) else v) for k, v in row_dict.items()}
-        
+
         log_instance = AdminLog(**row_dict)
         result.append({ "datetime": log_instance.datetime,
             "input_text": log_instance.input_text,
@@ -263,6 +266,20 @@ def getLogList():
             "dist3": log_instance.dist3,
             "fee3": log_instance.fee3
             })
+
+        if startDate and endDate:
+            start_date = datetime.strptime(startDate, "%Y-%m-%dT%H:%M:%S")
+            end_date = datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S")
+            result = [
+                log for log in result
+                if start_date <= datetime.strptime(log["datetime"], "%Y-%m-%d %H:%M:%S") <= end_date
+            ]
+
+        if emClass in range(1,6):
+            result = [
+                log for log in result
+                if log["em_class"] == emClass
+            ]
         
     return result
 
