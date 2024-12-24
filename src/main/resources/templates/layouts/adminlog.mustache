@@ -47,6 +47,28 @@
         }
     </style>
 
+    <form method="get" action="/admin" id="searchForm">
+        <label for="startDate">Start Date:</label>
+        <input type="datetime-local" id="startDate" name="startDate" value="{{startDate}}">
+
+        <label for="endDate">End Date:</label>
+        <input type="datetime-local" id="endDate" name="endDate" value="{{endDate}}">
+
+        <label for="emClass">등급</label>
+        <select id="emClass" name="emClass">
+            {{#emClass}}<option value="" hidden>{{emClass}}</option>{{/emClass}}
+            <option value="" {{^emClass}}selected{{/emClass}}>-- 선택 --</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+
+        <button type="button" onclick="resetForm()">초기화</button>
+        <button type="submit">Search</button>
+    </form>
+
     <table>
         <thead>
         <tr>
@@ -116,18 +138,18 @@
     <div class="pagination-container">
         <ul class="pagination justify-content-center">
             <li class="page-item {{^hasPrev}}disabled{{/hasPrev}}">
-                <a class="page-link" href="?page={{prev}}"
+                <a class="page-link" href="?page={{prev}}&startDate={{startDate}}&endDate={{endDate}}{{#emClass}}&emClass={{emClass}}{{/emClass}}"
                 tabindex="-1" aria-disabled="true">
                 Previous
                 </a>
             </li>
             {{#pageNumbers}}
                 <li class="page-item {{#isCurrentPage}}active{{/isCurrentPage}}">
-                    <a class="page-link" href="?page={{number}}">{{number}}</a>
+                    <a class="page-link" href="?page={{number}}&startDate={{startDate}}&endDate={{endDate}}{{#emClass}}&emClass={{emClass}}{{/emClass}}">{{number}}</a>
                 </li>
             {{/pageNumbers}}
             <li class="page-item {{^hasNext}}disabled{{/hasNext}}">
-                <a class="page-link" href="?page={{next}}"
+                <a class="page-link" href="?page={{next}}&startDate={{startDate}}&endDate={{endDate}}{{#emClass}}&emClass={{emClass}}{{/emClass}}"
                 tabindex="-1" aria-disabled="true">
                 Next
                 </a>
@@ -135,4 +157,15 @@
         </ul>
     </div>
 </div>
+
+<script>
+    function resetForm() {
+        const form = document.getElementById('searchForm');
+        form.reset();
+        document.getElementById('startDate').value = "";
+        document.getElementById('endDate').value = "";
+        document.getElementById('emClass').selectedIndex = "";
+    }
+</script>
+
 {{>layouts/footer}}
