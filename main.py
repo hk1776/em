@@ -217,11 +217,8 @@ class AdminLog (BaseModel):
     fee3: Optional[float] = 0
 
 @app.get('/items')
-def getLogList(
-    startDate: Optional[str] = Query(None),
-    endDate: Optional[str] = Query(None),
-    emClass: Optional[int] = Query(None)
-    ):
+def getLogList():
+
     conn = sqlite3.connect('./db/em.db')
 
     query = """
@@ -266,20 +263,6 @@ def getLogList(
             "dist3": log_instance.dist3,
             "fee3": log_instance.fee3
             })
-
-        if startDate and endDate:
-            start_date = datetime.strptime(startDate, "%Y-%m-%dT%H:%M:%S")
-            end_date = datetime.strptime(endDate, "%Y-%m-%dT%H:%M:%S")
-            result = [
-                log for log in result
-                if start_date <= datetime.strptime(log["datetime"], "%Y-%m-%d %H:%M:%S") <= end_date
-            ]
-
-        if emClass in range(1,6):
-            result = [
-                log for log in result
-                if log["em_class"] == emClass
-            ]
         
     return result
 
