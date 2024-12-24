@@ -52,5 +52,11 @@ public class MemberService {
         return null;
 
     }
+    public void update(Member member , EMDto.MemberDTO change) {
+        member.setName(change.getName());
+        member.setLoginId(change.getLoginId());
+        member.setPassword(change.getPassword());
+        repository.save(member);
+    }
 
 }

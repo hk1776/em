@@ -89,27 +89,6 @@ public class EMController {
         return "layouts/detail";
     }
 
-    @GetMapping("/signin")
-    public String signIn() {
-        return "layouts/signIn";
-    }
-
-    @PostMapping("/signin")
-    public String save(@Valid @ModelAttribute EMDto.MemberDTO member, BindingResult bindingResult,Model model) {
-        Optional<Member> find = memberService.findByLoginId(member.getLoginId());
-        if (find.isPresent()) {
-            log.info("id 있음");
-            bindingResult.reject("signInFail", "이미 있는 아이디 입니다.");
-            log.info("BindingResult has errors: {}", bindingResult.hasErrors());
-            model.addAttribute("signInError", bindingResult.getAllErrors());
-            return "layouts/signIn";
-        }else{
-            log.info("id 없음");
-            memberService.save(member);
-            return "redirect:/";
-        }
-
-    }
     @PostMapping("/upload")
     public String handleFileUpload(@RequestParam("file") MultipartFile file,
                                    @RequestParam("lat2") String lat,
