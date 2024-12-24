@@ -5,6 +5,7 @@ import com.example.em.service.EMService;
 import com.google.gson.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +36,9 @@ public class AdminController {
     private final EMService emService;
     private final RestTemplate restTemplate;
 
+    @Value("${hospital.api.host}")
+    private String hospitalApiHost;
+
     @GetMapping("/admin")
     public String adminPage(Model model, @RequestParam(name="page", defaultValue = "1") int page,
                             @RequestParam(name = "startDate", required = false) String startDateStr,
@@ -55,7 +59,7 @@ public class AdminController {
             endDate = LocalDateTime.parse(endDateStr+":00", requestFormatter);
         }
 
-        String url = "http://127.0.0.1:8000/items";
+        String url = hospitalApiHost + "/items";
         if (startDate != null && endDate != null && emClass != null) {
             url += "?startDate=" + startDate.format(requestFormatter) +
                     "&endDate=" + endDate.format(requestFormatter) +
