@@ -3,6 +3,7 @@ package com.example.em.controller;
 import com.example.em.config.Login;
 import com.example.em.domain.EMDto;
 import com.example.em.domain.Member;
+import com.example.em.service.EMService;
 import com.google.gson.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,6 +32,7 @@ import java.util.stream.IntStream;
 @Slf4j
 @RequiredArgsConstructor
 public class AdminController {
+    private final EMService emService;
     private final RestTemplate restTemplate;
 
     @Value("${hospital.api.host}")
@@ -95,12 +94,13 @@ public class AdminController {
 
         EMDto.Log[] emLogsArray = gson.fromJson(response.getBody(), EMDto.Log[].class);
         List<EMDto.Log> emLogsList = Arrays.asList(emLogsArray);
+        List<EMDto.HospitalLog> hospitalLogs = emService.transformLog(emLogsList);
 
         int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), emLogsList.size());
-        List<EMDto.Log> pageContent = emLogsList.subList(start, end);
+        int end = Math.min((start + pageable.getPageSize()), hospitalLogs.size());
+        List<EMDto.HospitalLog> pageContent = hospitalLogs.subList(start, end);
 
-        Page<EMDto.Log> logs = new PageImpl<>(pageContent, pageable, emLogsList.size());
+        Page<EMDto.HospitalLog> logs = new PageImpl<>(pageContent, pageable, hospitalLogs.size());
 
         model.addAttribute("logs", logs);
         model.addAttribute("prev", pageable.previousOrFirst().getPageNumber() + 1);
