@@ -1,19 +1,33 @@
 from typing import Union
-from fastapi import FastAPI, HTTPException
+
+from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
+import sqlite3
+
 import warnings
-import sys
-import emergency1218_2138 as em
-
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
 path = './'
-naver_id, naver_key = 'ztoukfrsyz', 'by6OZFl0dfROReNDIRiBSCmIItYbu5uYfb8saL8I'
+
+import os
+import requests
+import xml.etree.ElementTree as ET
+import pandas as pd
+import sys
+from fastapi import HTTPException
+sys.path.append(path)
+
+
+
+# 더 필요한 라이브러리 추가 -------------
+import old_emergency1218_2138 as em
+
+naver_id, naver_key='ztoukfrsyz','by6OZFl0dfROReNDIRiBSCmIItYbu5uYfb8saL8I'
 
 app = FastAPI()
 
-class Log(BaseModel):
+
+class Log (BaseModel):
     datetime: str
     input_text: str
     input_summary: str
@@ -26,61 +40,82 @@ class Log(BaseModel):
     eta1: str
     dist1: float
     fee1: int
-    path1: str
+    path1:str
     hospital2: str
     addr2: str
     tel2: str
     eta2: str
     dist2: float
     fee2: int
-    path2: str
+    path2:str
     hospital3: str
     addr3: str
     tel3: str
     eta3: str
     dist3: float
     fee3: int
-    path3: str
+    path3:str
 
+    
 class Emergency(BaseModel):
     status: str
     lat: float
     lon: float
 
-def process_hospital_recommendation(hospital_recommender):
-    try:
-        hospital_recommender.load_api_key()
-        hospital_recommender.text_summary()
-        transcript, result_r, ilat, ilon, result_t = hospital_recommender.classify_situation()
-        result = hospital_recommender.search_map()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
-
-    if isinstance(result, str):
-        return {"result": result}
-
-    if not result.empty:
-        row_data = result.iloc[0].to_dict()
-        return Log(**row_data)
-    else:
-        raise HTTPException(status_code=404, detail="No hospital found.")
-
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
+
 @app.put("/items/{filename}")
 def update_item(filename: str):
-    hospital_recommender = em.RecommendHospital3(
-        naver_id=naver_id,
-        naver_key=naver_key,
-        path=path,
-        filename=filename
-    )
+    try:
+        hospital_recommender = em.RecommendHospital3(naver_id=naver_id,
+                                                        naver_key=naver_key,
+                                                        path=path,
+                                                        filename=filename
+                                                        )
+        hospital_recommender.load_api_key()
+        result_t = hospital_recommender.text_summary()
+        transcript, result_r, ilat, ilon, result_t = hospital_recommender.classify_situation()
+        result = hospital_recommender.search_map()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+    
+    if isinstance(result, str):
+         return {"result": result}
 
-    log_instance = process_hospital_recommendation(hospital_recommender)
-
-    return log_instance.dict()
+    if not result.empty:
+        row_data = result.iloc[0].to_dict()
+        log_instance = Log(**row_data)
+    else:
+        raise HTTPException(status_code=404, detail="No hospital found.")
+        
+    return { "datetime": log_instance.datetime,
+            "input_text": log_instance.input_text,
+            "input_summary": log_instance.input_summary,
+            "input_latitude": log_instance.input_latitude,
+            "input_longitude": log_instance.input_longitude,
+            "em_class": log_instance.em_class,
+            "hospital1": log_instance.hospital1,
+            "addr1": log_instance.addr1,
+            "tel1": log_instance.tel1,
+            "eta1": log_instance.eta1,
+            "dist1": log_instance.dist1,
+            "fee1": log_instance.fee1,
+            "hospital2": log_instance.hospital2,
+            "addr2": log_instance.addr2,
+            "tel2": log_instance.tel2,
+            "eta2": log_instance.eta2,
+            "dist2": log_instance.dist2,
+            "fee2": log_instance.fee2,
+            "hospital3": log_instance.hospital3,
+            "addr3": log_instance.addr3,
+            "tel3": log_instance.tel3,
+            "eta3": log_instance.eta3,
+            "dist3": log_instance.dist3,
+            "fee3": log_instance.fee3
+            }
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
@@ -88,15 +123,63 @@ def read_item(item_id: int, q: Union[str, None] = None):
 
 @app.post("/items/text")
 def update_item_text(emer: Emergency):
-    hospital_recommender = em.RecommendHospital3(
-        naver_id=naver_id,
-        naver_key=naver_key,
-        path=path,
-        transcript=emer.status,
-        latitude=emer.lat,
-        longitude=emer.lon
-    )
+    try:
+        # Create hospital recommender object
+        hospital_recommender = em.RecommendHospital3(naver_id=naver_id,
+                                                     naver_key=naver_key,
+                                                     path=path,
+                                                     transcript=emer.status,
+                                                     latitude=emer.lat,
+                                                     longitude=emer.lon)
+        # Load API key
+        hospital_recommender.load_api_key()
+        # Get text summary
+        result_t = hospital_recommender.text_summary()
+        # Classify situation
+        transcript, result_r, ilat, ilon, result_t = hospital_recommender.classify_situation()
+        # Search for hospitals
+        result = hospital_recommender.search_map()
+ 
 
-    log_instance = process_hospital_recommendation(hospital_recommender)
+    except Exception as e:
+        print(result.head())
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+    
+    if isinstance(result, str):
+        return {"result": result}
 
-    return log_instance.dict()
+    if not result.empty:
+        row_data = result.iloc[0].to_dict()
+        log_instance = Log(**row_data)
+    else:
+        raise HTTPException(status_code=404, detail="No hospital found.")
+    
+    return { 
+            "datetime": log_instance.datetime,
+            "input_text": log_instance.input_text,
+            "input_summary": log_instance.input_summary,
+            "input_latitude": log_instance.input_latitude,
+            "input_longitude": log_instance.input_longitude,
+            "em_class": log_instance.em_class,
+            "hospital1": log_instance.hospital1,
+            "addr1": log_instance.addr1,
+            "tel1": log_instance.tel1,
+            "eta1": log_instance.eta1,
+            "dist1": log_instance.dist1,
+            "fee1": log_instance.fee1,
+            "path1":log_instance.path1,
+            "hospital2": log_instance.hospital2,
+            "addr2": log_instance.addr2,
+            "tel2": log_instance.tel2,
+            "eta2": log_instance.eta2,
+            "dist2": log_instance.dist2,
+            "fee2": log_instance.fee2,
+            "path2":log_instance.path2,
+            "hospital3": log_instance.hospital3,
+            "addr3": log_instance.addr3,
+            "tel3": log_instance.tel3,
+            "eta3": log_instance.eta3,
+            "dist3": log_instance.dist3,
+            "fee3": log_instance.fee3,
+            "path3":log_instance.path3
+            }
