@@ -2,11 +2,12 @@
 
 <div id="back_ground">
     <div style="display: flex; justify-content: flex-start; width: 30%; padding: 0;">
-        <button id="text" type="button" class="btn btn-success">텍스트 전송</button>
-        <button id="audio" type="button" class="btn btn-success">오디오 전송</button>
+        <button id="text" type="button" class="btn btn-success"
+                style="background-color: white; color: black; border-bottom : 2px solid white;border-bottom-left-radius: 0; border-bottom-right-radius: 0;">텍스트 전송</button>
+        <button id="audio" type="button" class="btn btn-success" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">오디오 전송</button>
     </div>
     <form id="txt_input" class="container" action="/em/info" method="post"
-          style="background-color: white; padding: 30px; width: 30%; border-radius: 8px;height: 55%; position: relative;">
+          style="background-color: white; padding: 30px; width: 30%; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0; border-top-right-radius: 8px; height: 55%; position: relative;">
 
         <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
@@ -37,11 +38,11 @@
     </form>
 
     <form id="audio_input" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
-          style="background-color: white; padding: 30px; width: 30%;height: 55%; border-radius: 8px; position: relative;display: none">
+          style="background-color: white; padding: 30px; width: 30%; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0; border-top-right-radius: 8px; height: 55%; position: relative;display: none">
 
         <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
-            <button type="button" class="icon-button btn btn-outline-primary" id="location-btn" style="margin-left: auto;">
+            <button type="button" class="icon-button btn btn-outline-primary" id="location-btn2" style="margin-left: auto;">
                 <img id="location-btm-img" src="images/location_img.png" alt="location" style="width: 20px; height: 20px;">
             </button>
         </div>
@@ -86,14 +87,28 @@
     const audioFileInput = document.getElementById("audioFile");
     const audioFileLabel = document.getElementById("audioFileLabel");
 
+
     txtBtn.addEventListener("click", () => {
         audioForm.style.display = "none"; // audioForm 숨김
         txtForm.style.display = "block"; // txtForm 표시
+        txtBtn.style.backgroundColor = "white";
+        txtBtn.style.color = "black";
+        txtBtn.style.borderBottom = "2px solid white";
+        audioBtn.style.backgroundColor = "";
+        audioBtn.style.color = "";
+        audioBtn.style.borderBottom = "2px solid transparent";
     });
 
     audioBtn.addEventListener("click", () => {
         txtForm.style.display = "none"; // txtForm 숨김
         audioForm.style.display = "block"; // audioForm 표시
+
+        audioBtn.style.backgroundColor = "white";
+        audioBtn.style.color = "black";
+        audioBtn.style.borderBottom = "2px solid white";
+        txtBtn.style.backgroundColor = "";
+        txtBtn.style.color = "";
+        txtBtn.style.borderBottom = "2px solid transparent";
     });
 
     document.getElementById('location-btn').addEventListener('click', function (event) {
@@ -133,6 +148,44 @@
             alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
         }
     });
+    document.getElementById('location-btn2').addEventListener('click', function (event) {
+        event.preventDefault(); // 기본 동작 방지
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+
+                        // 입력 필드에 위치 값 삽입
+                        document.querySelector('input[name="lat"]').value = latitude;
+                        document.querySelector('input[name="lon"]').value = longitude;
+                        document.querySelector('input[name="lat2"]').value = latitude;
+                        document.querySelector('input[name="lon2"]').value = longitude;
+
+                    },
+                    (error) => {
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                alert("위치 정보 사용이 거부되었습니다.");
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                alert("위치 정보를 사용할 수 없습니다.");
+                                break;
+                            case error.TIMEOUT:
+                                alert("위치 정보를 가져오는 데 시간이 초과되었습니다.");
+                                break;
+                            default:
+                                alert("알 수 없는 오류가 발생했습니다.");
+                        }
+                        console.error(error);
+                    }
+            );
+        } else {
+            alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
+        }
+    });
+
     startBtn.addEventListener("click", async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
