@@ -1,14 +1,22 @@
 {{>layouts/header}}
 
 <div id="back_ground">
-    <form id="data_input" class="container" action="/em/info" method="post" style="background-color: white; padding: 30px; width: 30%; border-radius: 8px;">
-        <!-- 위도 입력 -->
+    <div style="display: flex; justify-content: flex-start; width: 30%; padding: 0;">
+        <button id="text" type="button" class="btn btn-success">텍스트 전송</button>
+        <button id="audio" type="button" class="btn btn-success">오디오 전송</button>
+    </div>
+    <form id="txt_input" class="container" action="/em/info" method="post"
+          style="background-color: white; padding: 30px; width: 30%; border-radius: 8px;height: 55%; position: relative;">
+
+        <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
+            <button type="button" class="icon-button btn btn-outline-primary" id="location-btn" style="margin-left: auto;">
+                <img id="location-btm-img" src="images/location_img.png" alt="location" style="width: 20px; height: 20px;">
+            </button>
+        </div>
         <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
             <label class="form-label">위도</label>
             <input type="text" class="form-control" name="lat" placeholder="위도를 입력하세요" style="flex: 1; margin-left: 10px;">
-            <button type="button" class="icon-button btn btn-outline-primary" id="location-btn" style="margin-left: 10px;">
-                <img id="location-btm-img" src="images/location_img.png" alt="location" style="width: 20px; height: 20px;">
-            </button>
         </div>
 
         <!-- 경도 입력 -->
@@ -17,35 +25,48 @@
             <input type="text" class="form-control" name="lon" placeholder="경도를 입력하세요" style="flex: 1;">
         </div>
 
-
         <!-- 상태 입력 -->
         <div class="mb-3">
-            <label class="form-label">상태</label>
+            <label class="form-label" style="font-weight: bold;">상태</label>
             <textarea class="form-control" name="status" rows="5" placeholder="현재 무슨상태이죠?"></textarea>
         </div>
 
         <!-- 제출 버튼 -->
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary"
+                style="position: absolute; bottom: 30px; right: 0; transform: translateX(-50%);">Submit</button>
     </form>
 
-    <form id="data_audio" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
-          style="background-color: white; padding: 30px; width: 30%; border-radius: 8px; ">
-        <div class="mb-3">
+    <form id="audio_input" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
+          style="background-color: white; padding: 30px; width: 30%;height: 55%; border-radius: 8px; position: relative;display: none">
+        <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
+            <button type="button" class="icon-button btn btn-outline-primary" id="location-btn" style="margin-left: auto;">
+                <img id="location-btm-img" src="images/location_img.png" alt="location" style="width: 20px; height: 20px;">
+            </button>
+        </div>
+
+        <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
             <label class="form-label">위도</label>
-            <input id="latitude2" type="text" class="form-control" name="lat2">
+            <input type="text" class="form-control" id="latitude2"  name="lat2" placeholder="위도를 입력하세요" style="flex: 1; margin-left: 10px;">
         </div>
-        <div class="mb-3">
-            <label class="form-label">경도</label>
-            <input id="longitude2" type="text" class="form-control" name="lon2">
+
+        <!-- 경도 입력 -->
+        <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label" style="margin-right: 10px;">경도</label>
+            <input type="text" class="form-control" id="latitude2"  name="lon2" placeholder="경도를 입력하세요" style="flex: 1;">
         </div>
+
         <div class="mb-3">
-            <label class="form-label">음성 파일</label>
+            <label class="form-label" style="font-weight: bold">음성 파일</label>
             <label class="form-label" for="audioFile" id="audioFileLabel" style="display:none;">녹음 완료</label>
             <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display: none">
         </div>
-        <button id="startBtn" type="button">Start Recording</button>
-        <button id="stopBtn"  type="button" disabled>Stop Recording</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mb-3" style="height: 10%">
+            <button id="startBtn" type="button">Start Recording</button>
+            <button id="stopBtn"  type="button" disabled>Stop Recording</button>
+        </div>
+        <button type="submit" class="btn btn-primary"
+                style="position: absolute; bottom: 30px; right: 0;  transform: translateX(-50%);">Submit</button>
 
     </form>
 
@@ -53,12 +74,26 @@
 <script>
     let mediaRecorder;
     let audioChunks = [];
+    const txtBtn = document.getElementById("text");
+    const audioBtn = document.getElementById("audio");
+    const txtForm = document.getElementById("txt_input");
+    const audioForm = document.getElementById("audio_input");
     const startBtn = document.getElementById("startBtn");
     const stopBtn = document.getElementById("stopBtn");
     const latitudeInput = document.getElementById("latitude2");
     const longitudeInput = document.getElementById("longitude2");
     const audioFileInput = document.getElementById("audioFile");
     const audioFileLabel = document.getElementById("audioFileLabel");
+
+    txtBtn.addEventListener("click", () => {
+        audioForm.style.display = "none"; // audioForm 숨김
+        txtForm.style.display = "block"; // txtForm 표시
+    });
+
+    audioBtn.addEventListener("click", () => {
+        txtForm.style.display = "none"; // txtForm 숨김
+        audioForm.style.display = "block"; // audioForm 표시
+    });
 
     document.getElementById('location-btn').addEventListener('click', function (event) {
         event.preventDefault(); // 기본 동작 방지
@@ -74,8 +109,6 @@
                         document.querySelector('input[name="lon"]').value = longitude;
                         document.querySelector('input[name="lat2"]').value = latitude;
                         document.querySelector('input[name="lon2"]').value = longitude;
-
-
 
                     },
                     (error) => {
