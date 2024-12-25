@@ -8,13 +8,7 @@
     <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=basrjpnowz"></script>
 </head>
 <style>
-    .footer {
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background: white;
-        text-align: center;
-    }
+
     #back_ground {
         display: flex;
         justify-content: center;
@@ -183,7 +177,7 @@
 {{#member}}
     <div class="container-fluid d-flex justify-content-between" style="display: flex; align-items: center;">
         <!-- 왼쪽 로고 -->
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href={{#isAdmin}}"/admin"{{/isAdmin}}{{^isAdmin}}"/"{{/isAdmin}}>
             <img src="/images/aivle.png" alt="Logo" width="80" height="24" class="d-inline-block align-text-top">
         </a>
         <!-- 오른쪽 로그아웃 -->

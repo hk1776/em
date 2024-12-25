@@ -1,12 +1,37 @@
 {{>layouts/header}}
+<style>
+    #startBtn {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background: url('/images/recording_start.jpg') no-repeat center;
+        background-size: contain;
+        cursor: pointer;
+    }
+
+    #stopBtn {
+        width: 50px;
+        height: 50px;
+        border: none;
+        background: url('/images/unable_stop.png') no-repeat center;
+        background-size: contain;
+        cursor: pointer;
+    }
+</style>
 <div id="back_ground">
-    <div style="display: flex; justify-content: flex-start; width: 30%; padding: 0;">
+    <!-- 버튼들 (텍스트 전송, 오디오 전송) -->
+    <div style="display: flex; justify-content: flex-start; width: 30%; min-width: 250px; padding: 0; margin: 0;">
         <button id="text" type="button" class="btn btn-success"
-                style="background-color: white; color: black; border-bottom : 2px solid white;border-bottom-left-radius: 0; border-bottom-right-radius: 0;">텍스트</button>
+                style="background-color: white; color: black; border-bottom: 2px solid white; border-bottom-left-radius: 0; border-bottom-right-radius: 0;">텍스트</button>
         <button id="audio" type="button" class="btn btn-success" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;">오디오</button>
     </div>
+
+    <!-- 텍스트 전송 폼 -->
     <form id="txt_input" class="container" action="/em/info" method="post"
-          style="background-color: white; padding: 30px; width: 30%; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0; border-top-right-radius: 8px; height: 55%; position: relative;">
+          style="background-color: white; padding: 30px; width: 30%; min-width: 250px;
+          border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0;
+          border-top-right-radius: 8px; position: relative; box-sizing: border-box; margin: 0; display: flex;
+          flex-direction: column; justify-content: flex-start; height: 60vh; overflow-y: auto;">
 
         <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
@@ -26,20 +51,27 @@
         </div>
 
         <!-- 상태 입력 -->
-        <div class="mb-3">
-            <label class="form-label" style="font-weight: bold;">상태</label>
-            <textarea class="form-control" name="status" rows="5" placeholder="현재 무슨상태이죠?"></textarea>
+        <div class="mb-3" style="margin-top: 10px; height: 35%; min-height: 30px;">
+            <label class="form-label" style="font-weight: bold">상태</label>
+            <textarea class="form-control" name="status" rows="3" style="height: 90%" placeholder="현재 무슨상태이죠?"></textarea>
         </div>
 
         <!-- 제출 버튼 -->
+        <div style="position: absolute; bottom: 30px; right: 0; transform: translateX(-50%);">
+            <button id="submit1" type="submit" class="btn btn-primary" style="width: 100%; padding: 10px;">병원 탐색</button>
+        </div>
         <button id="submit1" type="submit" class="btn btn-primary"
                 style="position: absolute; bottom: 30px; right: 0; transform: translateX(-50%);">병원 탐색</button>
     </form>
     git fetch --all
     git reset --hard origin/브랜치명
 
+    <!-- 오디오 전송 폼 -->
     <form id="audio_input" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
-          style="background-color: white; padding: 30px; width: 30%; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0; border-top-right-radius: 8px; height: 55%; position: relative;display: none">
+          style="background-color: white; padding: 30px; width: 30%; min-width: 250px;
+          border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0;
+          border-top-right-radius: 8px; position: relative; box-sizing: border-box; margin: 0; display: none;
+          flex-direction: column; justify-content: flex-start; height: 60vh; overflow-y: auto;">
 
         <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
@@ -60,19 +92,19 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label" style="font-weight: bold;">상태 녹음</label>
-            <label class="form-label" for="audioFile" id="audioFileLabel" style="display:none;pointer-events: none;">녹음이 완료되었습니다.</label>
-            <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display:none;pointer-events: none;">
+            <label class="form-label" style="font-weight: bold;">음성 파일</label>
+            <label class="form-label" for="audioFile" id="audioFileLabel" style="display:none;">녹음 완료</label>
+            <input id="audioFile" type="file" class="form-control" name="file" accept="audio/mp3" style="display:none;">
         </div>
-        <div class="mb-3" style="height: 10%">
-            <button id="startBtn" type="button">Start Recording</button>
-            <button id="stopBtn"  type="button" disabled>Stop Recording</button>
+        <div class="mb-3" style="height: 35%">
+            <button id="startBtn" type="button"></button>
+            <button id="stopBtn"  type="button" disabled></button>
         </div>
-        <button id="submit2" type="submit" class="btn btn-primary"
-                style="position: absolute; bottom: 30px; right: 0;  transform: translateX(-50%);">병원 탐색</button>
-
+        <div style="position: absolute; bottom: 30px; right: 0; transform: translateX(-50%);">
+            <button id="submit2" type="submit" class="btn btn-primary"
+                    style="width: 100%; padding: 10px;">병원 탐색</button>
+        </div>
     </form>
-
 </div>
 <script>
     let mediaRecorder;
@@ -193,11 +225,15 @@
             alert("이 브라우저는 위치 정보를 지원하지 않습니다.");
         }
     });
-
+    const unableStart= "url('/images/unable_start.png')";
+    const unableStop = "url('/images/unable_stop.png')";
+    const Start= "url('/images/recording_start.jpg')";
+    const Stop = "url('/images/recording_stop.jpg')";
     startBtn.addEventListener("click", async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
-
+        startBtn.style.backgroundImage = unableStart;
+        stopBtn.style.backgroundImage = Stop;
         mediaRecorder.ondataavailable = (event) => {
             audioChunks.push(event.data);
         };
@@ -236,6 +272,8 @@
         mediaRecorder.stop();
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        startBtn.style.backgroundImage = Start;
+        stopBtn.style.backgroundImage = unableStop;
     });
 </script>
 {{>layouts/footer}}

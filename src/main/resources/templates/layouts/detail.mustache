@@ -1,7 +1,63 @@
 {{>layouts/header}}
+<style>
+    #back_ground {
+        min-height: 100vh;
+        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        padding: 10px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .btn-container {
+        position: sticky;
+        top: 10px;
+        z-index: 100;
+        padding: 10px 0;
+        margin-bottom: 10px;
+        height: 75%;
+    }
+
+    .btn-primary {
+        width: 120px !important;
+        height: 40px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .scrollable-div {
+        flex: 1;
+        overflow-y: auto;
+        height: calc(100vh - 80px);
+    }
+
+    .hospital-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: white;
+        height: 100%;
+        padding: 15px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+</style>
+
 <div id="back_ground">
     <div class="container">
-        <div class="scrollable-div">
+        <div class="btn-container" style="margin-top: 10%">
             <button onclick="window.history.back()" class="btn btn-primary" style="color: white;display: flex;justify-content: center; width: 10%;margin-bottom: 10px">뒤로가기</button>
             {{#data}}
                 <div class="hospital-card">
@@ -11,7 +67,7 @@
                     <p><span class="eta">예상 도착 시간:</span> {{eta}}</p>
                     <p><span class="distance">거리:</span> {{dist}} km</p>
                     <p><strong>예상 요금:</strong> {{fee}}원</p>
-                    <div id="map" style="width:100%;height:330px;"></div>
+                    <div id="map" style="width:100%;height:55%;margin-top: 20px;"></div>
                 </div>
             {{/data}}
         </div>
