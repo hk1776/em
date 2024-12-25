@@ -1,4 +1,104 @@
 {{>layouts/header}}
+<style>
+    #back_ground {
+        min-height: 100vh;
+        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        padding: 10px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .btn-container {
+        position: sticky;
+        top: 10px;
+        z-index: 100;
+        background-color: white; /* 배경색 추가 */
+        padding: 5px 0;
+        margin-bottom: 10px;
+    }
+
+    .btn-primary {
+        width: 120px !important;
+        height: 40px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .scrollable-div {
+        flex: 1;
+        overflow-y: auto;
+        height: calc(100vh - 80px);
+    }
+
+    .hospital-card {
+        background-color: white;
+        padding: 15px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        position: relative; /* 위치 기준점 설정 */
+        z-index: 1; /* 버튼보다 낮은 z-index */
+    }
+
+    #map {
+        width: 100%;
+        height: calc(100vh - 300px) !important;
+        min-height: 250px;
+        margin-top: 10px;
+        position: relative;
+        z-index: 1; /* 버튼보다 낮은 z-index */
+    }
+
+    /* 높이가 작을 때의 반응형 처리 */
+    @media screen and (max-height: 500px) {
+        .scrollable-div {
+            height: calc(100vh - 60px);
+        }
+
+        .hospital-card {
+            padding: 10px;
+        }
+
+        .hospital-card h2 {
+            font-size: 1.1em;
+            margin: 0 0 8px 0;
+        }
+
+        .hospital-card p {
+            margin: 4px 0;
+            font-size: 0.9em;
+        }
+
+        #map {
+            height: calc(100vh - 250px) !important;
+            min-height: 200px;
+        }
+    }
+
+    /* 작은 화면에서의 반응형 처리 */
+    @media screen and (max-width: 768px) {
+        .hospital-card {
+            padding: 12px;
+        }
+
+        .btn-primary {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+</style>
+
 <div id="back_ground">
     <div class="container">
         <div class="scrollable-div">

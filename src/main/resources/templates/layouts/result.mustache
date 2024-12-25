@@ -1,12 +1,114 @@
 <style>
+    #back_ground {
+        min-height: 100vh;
+        padding: 10px 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 1200px;
+        padding: 10px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .btn-container {
+        position: sticky;
+        top: 10px;
+        z-index: 100;
+        margin-bottom: 15px; /* 폼과의 간격 조정 */
+        width: 100%;
+        display: flex;
+    }
+
+    .btn-primary {
+        width: 120px !important;
+        height: 40px !important;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 !important; /* 기존 마진 제거 */
+    }
+
+    /* 큰 화면에서는 왼쪽 정렬 */
+    @media screen and (min-width: 769px) {
+        .btn-container {
+            justify-content: flex-start;
+        }
+    }
+
+    /* 작은 화면에서는 가운데 정렬 */
+    @media screen and (max-width: 768px) {
+        .btn-container {
+            justify-content: center;
+        }
+    }
+
+    .scrollable-div {
+        flex: 1;
+        overflow-y: auto;
+        height: calc(100vh - 80px); /* 버튼 높이(40px) + 여백(40px) 제외 */
+    }
+
+    .hospital-card {
+        padding: 15px;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: white;
+    }
+
     .hospital-card:hover {
-        background-color: #f0f8ff; /* 마우스 올릴 때 배경색 변경 */
+        background-color: #f0f8ff;
+    }
+
+    /* 높이가 작을 때의 반응형 처리 */
+    @media screen and (max-height: 500px) {
+        .scrollable-div {
+            height: calc(100vh - 60px); /* 여백 더 줄임 */
+        }
+
+        .hospital-card {
+            padding: 10px;
+            margin-bottom: 8px;
+        }
+
+        .hospital-card h2 {
+            font-size: 1.1em;
+            margin: 0 0 8px 0;
+        }
+
+        .hospital-card p {
+            margin: 4px 0;
+            font-size: 0.9em;
+        }
+    }
+
+    /* 큰 화면에서는 왼쪽 정렬 */
+    @media screen and (min-width: 769px) {
+        .btn-container {
+            justify-content: flex-start;
+        }
+    }
+
+    /* 작은 화면에서는 가운데 정렬 */
+    @media screen and (max-width: 768px) {
+        .btn-container {
+            justify-content: center;
+        }
     }
 </style>
 {{>layouts/header}}
 <div id="back_ground">
     <div class="container">
-        <a href="/" class="btn btn-primary" style="color: white;display: flex;justify-content: center; width: 10%;margin-bottom: 10px">다시 탐색</a>
+        <div class="btn-container">
+            <a href="/" class="btn btn-primary" style="color: white;">다시 탐색</a>
+        </div>
         <div class="scrollable-div">
             {{^emergency}}
                 {{#data0}}

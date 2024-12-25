@@ -16,7 +16,7 @@
     }
     #back_ground {
         display: flex;
-        justify-content: flex-start; /* 왼쪽 정렬 */
+        justify-content: center; /* 중앙 정렬 */
         align-items: center;
         background-color: lightgray;
         position: relative;
@@ -25,22 +25,32 @@
         background-image: url('/images/pic.jpg');
         background-position: center;
         background-size: cover;
-        padding-left: 5%;
     }
     #data_input {
         background-color: white;
         padding: 30px;
-        width: 30%;
+        width: 100%;
+        max-width: 400px; /* 최대 너비 400px */
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        max-height: 90vh; /* 최대 높이를 90%로 제한 (브라우저 높이보다 커지지 않도록) */
+        overflow-y: auto; /* 내용이 넘칠 경우 세로 스크롤 추가 */
     }
     #data_input img {
         display: block;
         margin: 20px auto 20px; /* 중앙 정렬 및 아래쪽 여백 추가 */
-        width: 13%; /* 부모 요소의 가로 10% */
-        height: 15%; /* 부모 요소의 세로 10% */
+        width: 13%; /* 부모 요소의 가로 13% */
+        height: auto; /* 비율 유지 */
     }
 
+    /* 작은 화면에서 폼 크기 및 여백 조정 */
+    @media (max-width: 768px) {
+        #data_input {
+            padding: 20px;
+            width: 80%; /* 작은 화면에서는 너비 80% */
+        }
+    }
 </style>
 <body>
 <div id="back_ground">
@@ -61,12 +71,13 @@
             <label class="form-label">비밀번호</label>
             <input type="password" class="form-control" name="password">
         </div>
-        <div style="">
-            <button type="submit" class="btn btn-primary" style="width: 100%;margin-top: 20px;margin-bottom: 20px;">로그인</button>
+        <div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px; margin-bottom: 20px;">로그인</button>
             <a href="/member/signin" class="btn btn-secondary" style="width: 100%">회원 가입</a>
         </div>
-
     </form>
 </div>
 
 {{>layouts/footer}}
+</body>
+</html>
