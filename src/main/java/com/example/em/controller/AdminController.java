@@ -164,7 +164,6 @@ public class AdminController {
             String logsJson = objectMapper.writeValueAsString(logs);
             model.addAttribute("logs", logsJson);
         } catch (Exception e) {
-            e.printStackTrace();
             model.addAttribute("logs", "[]");
         }
 
