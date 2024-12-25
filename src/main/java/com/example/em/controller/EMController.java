@@ -59,8 +59,8 @@ public class EMController {
             return "layouts/login";
         }
 
-//        String url = "https://mini7-festapi-a063094-gnh0dffwbvbfc9hd.koreacentral-01.azurewebsites.net/items/text";
-        String url = "http://127.0.0.1:8000/items/text";
+        String url = "https://mini7-festapi-a063094-gnh0dffwbvbfc9hd.koreacentral-01.azurewebsites.net/items/text";
+        //String url = "http://127.0.0.1:8000/items/text";
         String send = postService.sendPostRequest(url, info);
         Gson gson = new Gson();
         EMDto.Info data = gson.fromJson(send, EMDto.Info.class);
@@ -106,7 +106,8 @@ public class EMController {
         String location = lat + "," + lon;
         log.info("latlon"+location);
         // FastAPI 서버로 파일 전송
-        String fastApiUrl = "http://127.0.0.1:8000/upload-mp3/";
+        String fastApiUrl = "https://mini7-festapi-a063094-gnh0dffwbvbfc9hd.koreacentral-01.azurewebsites.net/upload-mp3/";
+        //String fastApiUrl = "http://127.0.0.1:8000/upload-mp3/";
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
