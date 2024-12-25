@@ -33,6 +33,7 @@
         box-sizing: border-box; /* 너비 계산에서 패딩 포함 */
     }
     #loading {
+        display: none;
         position: fixed;
         top: 0;
         left: 0;
@@ -40,11 +41,13 @@
         height: 100%;
         background: rgba(255, 255, 255, 0.7);
         z-index: 9999;
-        display: flex;
         justify-content: center;
         align-items: center;
     }
-
+    .loding_img {
+        height: 100px;
+        width: 100px;
+    }
     .spinner {
         border: 8px solid #f3f3f3;
         border-top: 8px solid #3498db;
@@ -173,6 +176,9 @@
     }
 </style>
 <body>
+<div id="loading" class="loading-screen">
+    <img src="images/loading_img.gif" alt="로딩 중..." class="loading-image">
+</div>
 <nav class="navbar bg-body-tertiary">
 {{#member}}
     <div class="container-fluid d-flex justify-content-between" style="display: flex; align-items: center;">
