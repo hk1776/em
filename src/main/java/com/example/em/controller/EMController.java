@@ -85,6 +85,7 @@ public class EMController {
             return "layouts/login";
         }
         log.info(data.toString());
+        model.addAttribute("member", loginmember);
         model.addAttribute("data", data);
         return "layouts/detail";
     }

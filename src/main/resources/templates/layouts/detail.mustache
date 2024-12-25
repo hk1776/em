@@ -21,9 +21,9 @@
         position: sticky;
         top: 10px;
         z-index: 100;
-        background-color: white; /* 배경색 추가 */
-        padding: 5px 0;
+        padding: 10px 0;
         margin-bottom: 10px;
+        height: 75%;
     }
 
     .btn-primary {
@@ -42,66 +42,22 @@
     }
 
     .hospital-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         background-color: white;
+        height: 100%;
         padding: 15px;
         margin-bottom: 10px;
         border: 1px solid #ddd;
         border-radius: 8px;
-        position: relative; /* 위치 기준점 설정 */
-        z-index: 1; /* 버튼보다 낮은 z-index */
     }
 
-    #map {
-        width: 100%;
-        height: calc(100vh - 300px) !important;
-        min-height: 250px;
-        margin-top: 10px;
-        position: relative;
-        z-index: 1; /* 버튼보다 낮은 z-index */
-    }
-
-    /* 높이가 작을 때의 반응형 처리 */
-    @media screen and (max-height: 500px) {
-        .scrollable-div {
-            height: calc(100vh - 60px);
-        }
-
-        .hospital-card {
-            padding: 10px;
-        }
-
-        .hospital-card h2 {
-            font-size: 1.1em;
-            margin: 0 0 8px 0;
-        }
-
-        .hospital-card p {
-            margin: 4px 0;
-            font-size: 0.9em;
-        }
-
-        #map {
-            height: calc(100vh - 250px) !important;
-            min-height: 200px;
-        }
-    }
-
-    /* 작은 화면에서의 반응형 처리 */
-    @media screen and (max-width: 768px) {
-        .hospital-card {
-            padding: 12px;
-        }
-
-        .btn-primary {
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
 </style>
 
 <div id="back_ground">
     <div class="container">
-        <div class="scrollable-div">
+        <div class="btn-container" style="margin-top: 10%">
             <button onclick="window.history.back()" class="btn btn-primary" style="color: white;display: flex;justify-content: center; width: 10%;margin-bottom: 10px">뒤로가기</button>
             {{#data}}
                 <div class="hospital-card">
@@ -111,7 +67,7 @@
                     <p><span class="eta">예상 도착 시간:</span> {{eta}}</p>
                     <p><span class="distance">거리:</span> {{dist}} km</p>
                     <p><strong>예상 요금:</strong> {{fee}}원</p>
-                    <div id="map" style="width:100%;height:330px;"></div>
+                    <div id="map" style="width:100%;height:55%;margin-top: 20px;"></div>
                 </div>
             {{/data}}
         </div>
