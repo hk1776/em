@@ -108,6 +108,8 @@ public class AdminController {
                 .collect(Collectors.toList());
         model.addAttribute("pageNumbers", pageNumbers);
         model.addAttribute("currentPage", currentPage);
+        model.addAttribute("member", loginmember);
+        model.addAttribute("isAdmin", true);
 
         return "layouts/adminlog";
     }
@@ -169,6 +171,8 @@ public class AdminController {
         model.addAttribute("startDate", startDateStr == null ? "" : startDateStr);
         model.addAttribute("endDate", endDateStr == null ? "" : endDateStr);
         model.addAttribute("emClass", emClass);
+        model.addAttribute("member", loginmember);
+        model.addAttribute("isAdmin", true);
 
         return "layouts/adminchart";
     }
