@@ -10,6 +10,8 @@ import xml.etree.ElementTree as ET
 import openai
 from openai import OpenAI
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from sentence_transformers import SentenceTransformer, util
+
 import torch
 from geopy.distance import geodesic
 from geopy import Point
@@ -120,6 +122,50 @@ class RecommendHospital3:
     # 2. model prediction------------------
     def classify_situation(self):
       transcript, text, latitude, longitude = self.text_summary()
+      
+      # =====
+      # RAG
+      emb_directory = self.path + 'RAG_model/'
+      
+      embedder = SentenceTransformer(emb_directory)
+      corpus = []
+      
+      RAG_docs_path = self.path + "RAG_docs.txt"
+      with open(RAG_docs_path, "r", encoding="utf-8") as file:
+          for line in file:
+            line = line.strip()  # 양쪽 공백 제거
+            if line:  # 빈 줄은 제외
+                corpus.append(line)
+      # 임베딩 캐싱 경로 설정
+      cache_path = './corpus_embeddings_cache.pt'
+
+      # 캐싱 확인 및 로드
+      if not os.path.exists(cache_path):
+          corpus_embeddings = embedder.encode(corpus, convert_to_tensor=True, batch_size=32)
+          torch.save(corpus_embeddings, cache_path)
+          print("임베딩 캐싱 완료.")
+      else:
+          corpus_embeddings = torch.load(cache_path)
+          print("임베딩 캐시 로드 완료.")
+      
+
+            
+      top_k = 5
+      query_embedding = embedder.encode(text, convert_to_tensor=True)
+      cos_scores = util.pytorch_cos_sim(query_embedding, corpus_embeddings)[0]
+      cos_scores = cos_scores.cpu()
+    
+      #We use np.argpartition, to only partially sort the top_k results
+      top_results = np.argpartition(-cos_scores, range(top_k))[0:top_k]
+      response = f"""Query: {text}\n
+      Corpus[1] : {corpus[top_results[0]]}\n
+      Corpus[2] : {corpus[top_results[1]]}\n
+      Corpus[3] : {corpus[top_results[2]]}\n
+      Corpus[4] : {corpus[top_results[3]]}\n
+      Corpus[5] : {corpus[top_results[4]]}\n
+      """
+      print(response)
+      # =====
 
       save_directory = self.path + 'fine_tuned_bert_v2/'
 
@@ -132,7 +178,7 @@ class RecommendHospital3:
       device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
       # 입력 문장 토크나이징
-      inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
+      inputs = tokenizer(response, return_tensors="pt", truncation=True, padding=True)
       inputs = {key: value.to(device) for key, value in inputs.items()}  # 각 텐서를 GPU로 이동
 
       # 모델 예측
