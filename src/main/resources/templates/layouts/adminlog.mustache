@@ -75,6 +75,11 @@
             opacity: 0.9;
           }
 
+          .btn-container {
+            display: flex;
+            justify-content: center;
+          }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -226,9 +231,9 @@
         </ul>
     </div>
 
-    <form method="get" action="/admin/chart-data">
-        <button id="chart" type="submit">차트 확인</button>
-    </form>
+    <div class="btn-container">
+        <a href="/admin/chart-data" class="btn btn-primary" style="color: white;">차트 확인</a>
+    </div>
 </div>
 
 <script>
