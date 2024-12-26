@@ -75,7 +75,8 @@ public class EMController {
             }
 
         }
-        model.addAttribute("class", info.getClass());
+        log.info("등급"+data.getEm_class());
+        model.addAttribute("class", data.getEm_class());
         model.addAttribute("emergency", emergency);
         model.addAttribute("member", loginmember);
         return "layouts/result";
