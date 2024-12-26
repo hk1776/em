@@ -57,7 +57,7 @@ public class MemberController {
     }
 
     @PostMapping("/change")
-    public String chageMember(@Login Member loginmember,@Valid @ModelAttribute EMDto.MemberDTO member) {
+    public String changeMember(@Login Member loginmember,@Valid @ModelAttribute EMDto.MemberDTO member) {
         if (loginmember == null) {
             return "layouts/login";
         }
