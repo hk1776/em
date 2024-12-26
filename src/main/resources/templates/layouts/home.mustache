@@ -20,7 +20,7 @@
 </style>
 <div id="back_ground">
     <!-- 버튼들 (텍스트 전송, 오디오 전송) -->
-    <div style="display: flex; justify-content: flex-start; width: 100%; max-width: 400px; padding: 0; margin: 0;">
+    <div style="display: flex; justify-content: flex-start; width: 100%; max-width: 500px; padding: 0; margin: 0;">
         <button id="text" type="button" class="btn btn-success"
                 style="background-color: white; color: black; border-bottom: 2px solid white; border-bottom-left-radius: 0; border-bottom-right-radius: 0; width: 20%;">텍스트</button>
         <button id="audio" type="button" class="btn btn-success" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0; width: 20%;">오디오</button>
@@ -28,7 +28,7 @@
 
     <!-- 텍스트 전송 폼 -->
     <form id="txt_input" class="container" action="/em/info" method="post"
-          style="background-color: white; padding: 30px; width: 100%; max-width: 400px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0;border-top-right-radius: 8px; position: relative; box-sizing: border-box; margin: 0; display: flex; flex-direction: column; justify-content: flex-start; height: 60vh; overflow-y: auto;">
+          style="background-color: white; padding: 30px; width: 100%; max-width: 500px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0;border-top-right-radius: 8px; position: relative; box-sizing: border-box; margin: 0; display: flex; flex-direction: column; justify-content: flex-start; height: 60vh; overflow-y: auto;">
 
         <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
@@ -62,7 +62,7 @@
 
     <!-- 오디오 전송 폼 -->
     <form id="audio_input" class="container" action="/em/upload" method="post" enctype="multipart/form-data"
-          style="background-color: white; padding: 30px; width: 100%; max-width: 400px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0;border-top-right-radius: 8px; height: 60vh; position: relative; overflow-y: auto; box-sizing: border-box; margin: 0; display: none; flex-direction: column; justify-content: flex-start;">
+          style="background-color: white; padding: 30px; width: 100%; max-width: 500px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-top-left-radius: 0;border-top-right-radius: 8px; height: 60vh; position: relative; overflow-y: auto; box-sizing: border-box; margin: 0; display: none; flex-direction: column; justify-content: flex-start;">
 
         <div class="mb-3" style="display: flex; justify-content: space-between; align-items: center;">
             <label class="form-label" style="margin-bottom: 0;font-weight: bold">현재 위치</label>
