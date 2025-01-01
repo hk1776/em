@@ -8,10 +8,22 @@ server:
       timeout: 1800
 
 spring:
-  messages:
-      basename: "messages,errors"
+  datasource:
+    driver-class-name: org.h2.Driver
+    url:
+    username:
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+hospital:
+  api:
+    host:
