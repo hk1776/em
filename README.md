@@ -168,39 +168,34 @@
 
       - <b>위치정보 자동입력 버튼 클릭 시 권한 요청 후 현재 유저의 위/경도 자동 입력</b>
 	![home5](https://github.com/user-attachments/assets/977b52e5-c180-4ff8-bcbe-8eee2bbaf85d)
-	![home6](https://github.com/user-attachments/assets/d72175fa-0e36-4a20-ae0a-f8fb9641734f)
+	![그림2](https://github.com/user-attachments/assets/7d1271c9-6ef7-47cb-88f6-4ca46b397a9b)
 
       - <b>유저 응급 상태 텍스트 방식으로 입력</b>
-	![home7](https://github.com/user-attachments/assets/28fc07ad-bf5f-40a6-9d37-156703b6136c)
+	![그림3](https://github.com/user-attachments/assets/27c65e4d-f671-49ed-911c-3ca2d637bfce)
 
 
       - <b>마이크 사용 권한 설정</b>
-	![home9](https://github.com/user-attachments/assets/6bc2f440-9183-4772-81ed-f2e55162e43a)
+	![그림5](https://github.com/user-attachments/assets/a24da623-acce-4f4c-a690-d13e3be708ff)
 
       - <b>유저 응급 상태 음성 녹음 방식으로 입력</b>
-	![home11](https://github.com/user-attachments/assets/7ac1291d-01cc-4c63-937f-61020eea8b3c)
-	![home10](https://github.com/user-attachments/assets/35b25ff8-8e3f-457e-8337-be37edd44974)
+	![그림7](https://github.com/user-attachments/assets/a71b2894-d577-4a3a-be10-c14cd31f50f4)
+	![그림6](https://github.com/user-attachments/assets/37509186-27e3-4891-b521-462c80b92ab7)
 
       - <b>병원 탐색 버튼 클릭으로 유저 응급 상태 텍스트 / 음성 파일과 사용자 위치 정보 AI서버(FastAPI서버)로 전송</b>
-	![home12](https://github.com/user-attachments/assets/136762e7-bb16-4598-bb75-1e8411e94b95)
+	![그림4](https://github.com/user-attachments/assets/1864a329-8513-4ff5-90d1-91416148dc16)
 	
 
 <br><br>
- - #### 응급 상황 분석
-
-      
-
-<br><br>
- - #### 응급 상황 분석
-
-
-
-
-
+ - #### 응급 상황 분석 결과
+      - <b>응급 상황이라고 판단 될 시 (응급 등급이 1~3 등급일 경우) 가장 가까운 응급실 3곳 표시</b>
+      	![스크린샷 2024-12-26 144900](https://github.com/user-attachments/assets/0ade8e47-7b73-4785-af4d-5d73d838d1f3)
+      - <b>응급 상황이 아니라고 판단 될 시 (응급 등급이 4~5 등급일 경우) 안내 문구 표시</b>
+	![스크린샷 2024-12-26 145016](https://github.com/user-attachments/assets/0f203d1a-1c1c-4c37-a071-6f6c37ff3c73)
 
 <br><br>
-  - #### 병원 상세 정보 및 경로 표시
-
+- #### 병원 상세 정보 및 경로 표시
+	- <b>추천 병원 정보 카드 클릭 시 해당 응급실에 대한 세부 정보 및 이동 경로 표시</b>
+	![스크린샷 2024-12-26 144914](https://github.com/user-attachments/assets/7a3b7719-482f-4e27-a384-2df27bbcec94)
 
 
 
