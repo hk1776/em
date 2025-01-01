@@ -214,7 +214,7 @@
 ### FastAPI 서버 주요기능
 ![image](https://github.com/user-attachments/assets/b31e5363-f4f0-4acd-9287-7dc03065691c)
 <br>
-- <b>REG Model을 추가하여 6차 미니 프로젝트에서 Fine-Tuning한 Bert Model의 분류 정확도 성능을 높혔음</b>
+- <b>REG Model을 추가하여 6차 미니 프로젝트에서 Fine-Tuning한 Bert Model의 분류 정확도 성능을 높혔음(accuracy : 0.95) </b>
   ![image](https://github.com/user-attachments/assets/d5b75e1d-fda5-4088-8c8b-6fb2f7129f43)
 
 
