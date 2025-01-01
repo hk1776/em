@@ -221,13 +221,13 @@
       
 <br><br>
   ### 배포
-   - #### Docker
+#### Docker
    - <b>Docker Image build and push</b>
 	![image](https://github.com/user-attachments/assets/15d554c0-cb17-4022-9a19-46fb7310b361)
 
 
 <br><br>
-   - #### Azure
+#### Azure
    - <b>Azure에 Spring 컨테이너 배포</b>
      ![image](https://github.com/user-attachments/assets/4b3c5ae7-a0bc-44b8-94c3-a0d87d21d33d)
 - <b>Azure에 AI서버(FastAPI 서버) 컨테이너 배포</b>
