@@ -1,4 +1,4 @@
-![admin6](https://github.com/user-attachments/assets/7e7132dd-bbbd-4ba9-862f-b8cca7db8613)# 응급실 연계 서비스 포탈
+
 ![스크린샷 2025-01-01 174328](https://github.com/user-attachments/assets/3b2f0506-136c-4a51-ac93-96d09a2013e2)
 
 **KT AIVLE School 7차 미니프로젝트**
