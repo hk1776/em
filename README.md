@@ -228,9 +228,9 @@
 
 <br><br>
    - #### Azure
-   - <b>Azure 컨테이너 인스턴스에 Spring Docker 이미지 배포</b>
+   - <b>Azure에 Spring 컨테이너 배포</b>
      ![image](https://github.com/user-attachments/assets/4b3c5ae7-a0bc-44b8-94c3-a0d87d21d33d)
-- <b>Azure 컨테이너 인스턴스에 AI서버(FastAPI 서버) Docker 이미지 배포</b>
+- <b>Azure에 AI서버(FastAPI 서버) 컨테이너 배포</b>
 ![image](https://github.com/user-attachments/assets/252d7b85-0094-449b-b4e3-3f7e014877f7)
 
 <br><br>
