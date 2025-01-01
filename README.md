@@ -1,4 +1,4 @@
-# 응급실 연계 서비스 포탈
+![admin6](https://github.com/user-attachments/assets/7e7132dd-bbbd-4ba9-862f-b8cca7db8613)# 응급실 연계 서비스 포탈
 ![스크린샷 2025-01-01 174328](https://github.com/user-attachments/assets/3b2f0506-136c-4a51-ac93-96d09a2013e2)
 
 **KT AIVLE School 7차 미니프로젝트**
@@ -199,13 +199,14 @@
 
 
 
-
-
-
-
 <br><br>
   - #### 관리자 페이지
-
+	- <b>관리자 계정으로 로그인(ID : admin / PW : admin)</b>
+	![admin1](https://github.com/user-attachments/assets/0c313e20-b1bd-4f37-b4d6-9e0215c9fd43)
+	- <b>관리자 계정이면 자동으로 관리자 페이지로 이동하여 응급 요청 로그 확인 가능(날짜별, 등급별 검색 기능 포함)</b>
+	![admin6](https://github.com/user-attachments/assets/1cf6e49d-f90c-4f02-9f8a-1fa6228da138)
+	- <b>Chart 버튼 클릭으로 응급 요청 통계 확인</b>
+	![chart-data1](https://github.com/user-attachments/assets/58f39f73-2467-46f0-90e7-d594208e5067)
 
 
 
